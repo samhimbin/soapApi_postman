@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "b7cd3874-08d0-4061-9b1a-b846a380c512",
+		"name": "Soap_Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19989330"
+	},
+	"item": [
+		{
+			"name": "Number to words conversion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = xml2Json(pm.response.text());\r",
+							"console.log(responseJson);\r",
+							"console.log(responseJson[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToWordsResponse\"][\"m:NumberToWordsResult\"]);\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate the string of response\",()=>{\r",
+							"    const actual_val=responseJson[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToWordsResponse\"][\"m:NumberToWordsResult\"];\r",
+							"    pm.expect(pm.collectionVariables.get(\"result\")).to.eql(actual_val);\r",
+							"});\r",
+							"pm.test(\"validate specific text present\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"result\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">\r\n      <ubiNum>{{number}}</ubiNum>\r\n    </NumberToWords>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.dataaccess.com/webservicesserver/NumberConversion.wso?op=NumberToWords",
+					"protocol": "https",
+					"host": [
+						"www",
+						"dataaccess",
+						"com"
+					],
+					"path": [
+						"webservicesserver",
+						"NumberConversion.wso"
+					],
+					"query": [
+						{
+							"key": "op",
+							"value": "NumberToWords"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Number to dollars",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = xml2Json(pm.response.text());\r",
+							"console.log(responseJson);\r",
+							"console.log(responseJson[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToDollarsResponse\"][\"m:NumberToDollarsResult\"]);\r",
+							"pm.test(\"validate response \",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"decimalResult\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate the string of response\",()=>{\r",
+							"    const actual_val=responseJson[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToDollarsResponse\"][\"m:NumberToDollarsResult\"];\r",
+							"    console.log(actual_val);\r",
+							"    pm.expect(pm.collectionVariables.get(\"decimalResult\")).to.eql(actual_val);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <NumberToDollars xmlns=\"http://www.dataaccess.com/webservicesserver/\">\r\n      <dNum>{{decimalNum}}</dNum>\r\n    </NumberToDollars>\r\n  </soap12:Body>\r\n</soap12:Envelope>\r\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.dataaccess.com/webservicesserver/NumberConversion.wso?op=NumberToDollars",
+					"protocol": "https",
+					"host": [
+						"www",
+						"dataaccess",
+						"com"
+					],
+					"path": [
+						"webservicesserver",
+						"NumberConversion.wso"
+					],
+					"query": [
+						{
+							"key": "op",
+							"value": "NumberToDollars"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "number",
+			"value": "600",
+			"type": "string"
+		},
+		{
+			"key": "result",
+			"value": "six hundred",
+			"type": "string"
+		},
+		{
+			"key": "decimalNum",
+			"value": "25.5",
+			"type": "string"
+		},
+		{
+			"key": "decimalResult",
+			"value": "twenty five dollars and fifty cents",
+			"type": "string"
+		}
+	]
+}
